@@ -1,0 +1,16 @@
+{% extends 'base.html.twig'%}
+{% block title %} List of messages {% endblock %}
+
+ {% block body %}
+ <ul>
+ {% for message in messages%}
+ <li>
+ <a href="{{ path('message.showNote', {id:message.getId, slug:message.getSlug})}}">{{message.getTitle}}</a>
+ </li>
+
+{% endfor %}
+ </ul>
+
+ {% endblock %}
+
+ 

@@ -14,17 +14,14 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $sender_id = null;
-
-    #[ORM\Column]
-    private ?int $recipient_id = null;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message_text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -96,6 +93,18 @@ class Message
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

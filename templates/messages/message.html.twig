@@ -1,0 +1,14 @@
+{% extends 'base.html.twig'%}
+{% block title %}
+	{{message.title}}
+{% endblock %}
+
+{% block body %}
+	
+<h1>{{message.title}}</h1>
+<p>From <i>{{message.author.nom}}</i><p/>
+<p>To <i>{{message.recipient.nom}}</i><p/>
+<p>{{message.content}}</p>
+	
+	#on récupère du controller tous les éléments#
+{% endblock %}
