@@ -10,13 +10,17 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Message;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
+use App\Repository\UserRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
 
 class MessageAdminController extends AbstractController
 {
-    #[Route('/messages/add', name: 'message.addNew', methods: ['POST'])]
-    public function addMessage(Request $request, EntityManagerInterface $entityManager): Response {
+    #[Route('/messages/add', name: 'message.addNew')]
+    public function addMessage(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository ): Response {
+
+        // $sender = $userRepository->find($senderId);
+
         // Create the form for the Message entity
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
@@ -26,15 +30,18 @@ class MessageAdminController extends AbstractController
 
         // Check if form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
+
             // Persist the new message to the database
+            // $message->setSender($sender);
             $entityManager->persist($message);
             $entityManager->flush();
-
             // Redirect to a success page or list of messages
-            return $this->render('messageSuccess.html.twig'); 
+              $this->addFlash('success', 'Message bien ajouté');
+
+              return $this->redirectToRoute('message.index');
         }
 
-        return $this->render('new.html.twig', [
+        return $this->render('messages/new.html.twig', [
             'form' => $form,
         ]);
     }

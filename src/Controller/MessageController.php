@@ -12,21 +12,11 @@ class MessageController extends AbstractController
 {
 
     #[Route('/messages', name: 'message.index')]
-    function index(Request $request, MessageRepository $messageRepository, int $senderId, int $recipientId): Response
+    function index(Request $request, MessageRepository $messageRepository): Response
 
+    // arguments  int $senderId, int $recipientId
     {
-        /*EntityManagerInterface $emi
-        Créer un message
-        $message = new Message();
-        $message -> setTitle("Thank you Paul")
-        -> setSlug(thank-you-paul)
-        -> setMessageText("You're the best partner anyone could dream of, I'm so thankful to have you by my side")
-        -> setRecipient($recipidentId)
-        -> setSender($senderId)
-        -> setCreatedAt(new \DateTimeMutable());
-        $emi -> persist($message);
-        $emi->flush();
-
+        /*
         Delete message
         $emi->remove($messages[0])
         $emi->flush();

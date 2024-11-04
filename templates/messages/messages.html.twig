@@ -1,5 +1,5 @@
 {% extends 'base.html.twig'%}
-{% block title %} List of messages {% endblock %}
+{% block title %} Liste des messages {% endblock %}
 
  {% block body %}
  <ul>
@@ -10,6 +10,8 @@
 
 {% endfor %}
  </ul>
+
+ <a href="{{path('message.addNew')}}" class="btn btn-primary">Ajouter un message</a>
 
  {% endblock %}
 

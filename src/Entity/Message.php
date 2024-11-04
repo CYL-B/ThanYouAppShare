@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class Message
 {
     #[ORM\Id]
@@ -27,7 +29,7 @@ class Message
     private ?string $title = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sentMessages')]
-    #[ORM\JoinColumn(name: 'sender_id', referencedColumnName: 'id', nullable: false, onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: 'sender_id', referencedColumnName: 'id', onDelete: "CASCADE")]
     private User $sender;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'receivedMessages')]
@@ -39,16 +41,17 @@ class Message
         return $this->id;
     }
 
-    public function getSender(): User
-    {
-        return $this->sender;
-    }
-
     public function setSender(User $sender): self
     {
         $this->sender = $sender;
         return $this;
     }
+    public function getSender(): User
+    {
+        return $this->sender;
+    }
+
+   
 
     public function getRecipient(): User
     {
@@ -71,6 +74,10 @@ class Message
         $this->message_text = $message_text;
 
         return $this;
+    }
+
+    public function __construct (){
+        $this->created_at = new \DateTime();
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -102,10 +109,23 @@ class Message
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
+
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function generateSlug(): void
+    {
+    // Assuming there's a property $title
+    $this->slug = str_replace(' ', '_', strtolower($this->title));
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->generateSlug();
     }
 }

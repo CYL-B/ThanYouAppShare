@@ -110,4 +110,9 @@ class User
     }
         // You may also add helper methods to add and remove messages from the collections
 
+        public function getFullName() : ?string {
+            return $this->getPrenom() . ' ' . $this->getNom() ;
+        }
+
+        //specific function used in messageForm to get recipient fullname
 }
