@@ -47,6 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'recipient')]
     private Collection $receivedMessages;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarPath = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -153,5 +156,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAvatarPath(): ?string
+    {
+        return $this->avatarPath;
+    }
+
+    public function setAvatarPath(?string $avatarPath): static
+    {
+        $this->avatarPath = $avatarPath;
+
+        return $this;
     }
 }
