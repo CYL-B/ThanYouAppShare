@@ -77,7 +77,8 @@ class Message
         return $this;
     }
 
-    public function generateDate (){
+    public function generateDate()
+    {
         $this->created_at = new \DateTimeImmutable();
     }
 
@@ -120,16 +121,17 @@ class Message
 
     public function generateSlug(): void
     {
-    // Assuming there's a property $title
-    $slugger = new AsciiSlugger();
-    $this->slug = strtolower($slugger -> slug($this->title));
+        // Assuming there's a property $title
+        $slugger = new AsciiSlugger();
+        $this->slug = strtolower($slugger->slug($this->title));
     }
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->generateSlug();  
-        $this->generateDate();  }
+        $this->generateSlug();
+        $this->generateDate();
+    }
 
     // #[ORM\PostPersist] 
     // public function onPostPersist(): void

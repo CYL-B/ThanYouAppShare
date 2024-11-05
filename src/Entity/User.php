@@ -126,25 +126,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function __construct()
-        {
-            $this->sentMessages = new ArrayCollection();
-            $this->receivedMessages = new ArrayCollection();
-        }
-    
-            // Getter for sentMessages
-    
-    
-        public function getSentMessages(): Collection
-        {
-            return $this->sentMessages;
-        }
-    
-            // Getter for receivedMessages
-    
-        public function getReceivedMessages(): Collection
-        {
-            return $this->receivedMessages;
-        }
+    {
+        $this->sentMessages = new ArrayCollection();
+        $this->receivedMessages = new ArrayCollection();
+    }
+
+    // Getter for sentMessages
+
+
+    public function getSentMessages(): Collection
+    {
+        return $this->sentMessages;
+    }
+
+    // Getter for receivedMessages
+
+    public function getReceivedMessages(): Collection
+    {
+        return $this->receivedMessages;
+    }
 
     /**
      * @see UserInterface

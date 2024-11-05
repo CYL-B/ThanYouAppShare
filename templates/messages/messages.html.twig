@@ -1,24 +1,37 @@
 {% extends 'base.html.twig'%}
-{% block title %} Liste des messages {% endblock %}
+{% block title %}
+	Liste des messages
+{% endblock %}
 
- {% block body %}
- 
- <h1>Liste des messages de remerciement</h1>
- <ul class="messageList list-group list-group-flush">
- {% for message in messages %}
- <a class="text-decoration-none" href="{{ path('message.showNote', {id:message.id, slug:message.slug})}}"><li class="messageList__message list-group-item">
- <p>A l'attention de : {{message.getRecipient ? message.getRecipient.getUsername() : 'Inconnu'}}</p>
- <p>De la part de : {{message.getSender ? message.getSender.getUsername() : 'Inconnu' }}</p>
- <p class="fs-3">{{message.title}}</p>
- {{message.getCreatedAt |format_datetime('short', 'none', locale: 'fr')}}
- </li>
- </a>
+{% block body %}
 
-{% endfor %}
- </ul>
+	<h1>Liste des messages de remerciement</h1>
+	<div id="userInfo" data-username="{{ app.user.username }}"></div>
+	<ul class="messageList d-flex flex-wrap gap-3 list-group-horizontal">
+		{% for message in listMessages %}
 
- <a href="{{path('message.addNew')}}" class="btn btn-primary">Ajouter un message</a>
+			<li class="messageList__message list-group-item flex-grow-1 p-4 rounded {% if loop.index is even %}bgCard-primary{% else %}bgCard-secondary{% endif %}" data-recipient={{message.getRecipient.getUsername() }}>
+				<p class="fs-6 text-body-secondary">{{message.getCreatedAt |format_datetime('short', 'none', locale: 'fr')}}</p>
+				<a class="text-decoration-none" href="{{ path('message.showNote', {id:message.id, slug:message.slug})}}">
+					<p class="fs-3 fw-bold text-dark">{{message.title}}</p>
+				</a>
+				<hr class="solid">
+				<p class="fs-6">
+					<span class="fw-bold">A l'attention de :
+					</span>
+					{{message.getRecipient ? message.getRecipient.getUsername() : 'Inconnu'}}</p>
+				<p class="fs-6">
+					<span class="fw-bold">De la part de :</span>
+					{{message.getSender ? message.getSender.getUsername() : 'Inconnu' }}</p>
 
- {% endblock %}
 
- 
+			</li>
+
+		{% endfor %}
+	</ul>
+
+	<a href="{{path('message.addNew')}}" class="btn btn-warning">Ajouter un message</a>
+	<a id="filterButton" class="btn btn-secondary">Filter Messages</a>
+
+
+{% endblock %}

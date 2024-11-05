@@ -1,7 +1,15 @@
 body {
-    font-family: "Playfair Display", serif;
+  font-family: "Playfair Display", serif;
 }
 
 .bg-custom {
-background-color: #F8F5F2;
+  background-color: #f8f5f2;
+}
+
+.bgCard-primary {
+  background-color: #cafb5c;
+}
+
+.bgCard-secondary {
+  background-color: #8b8cf7;
 }
