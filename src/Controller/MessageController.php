@@ -13,18 +13,10 @@ class MessageController extends AbstractController
 
     #[Route('/messages', name: 'message.index')]
     function index(Request $request, MessageRepository $messageRepository): Response
-
-    // arguments  int $senderId, int $recipientId
     {
-        /*
-        Delete message
-        $emi->remove($messages[0])
-        $emi->flush();
-        */
-
-
         //récupère tous les messages de la BDD
        $messages = $messageRepository -> findAll();
+       
        
         return $this->render('messages/messages.html.twig', ["messages" => $messages]);
         //envoie la variable messages contenant tous les messages récupérés de la DBB

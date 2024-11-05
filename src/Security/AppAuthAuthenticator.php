@@ -16,13 +16,16 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+use App\Repository\UserRepository;
+
 class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator,
+    private UserRepository $userRepository)
     {
     }
 
@@ -33,6 +36,7 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $username);
 
         return new Passport(
+//permet de s'identifier par username ou email
             new UserBadge($username),
             new PasswordCredentials($request->getPayload()->getString('password')),
             [
@@ -47,6 +51,7 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
+        //permet de générer une url
         return new RedirectResponse($this->urlGenerator->generate('message.index'));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }

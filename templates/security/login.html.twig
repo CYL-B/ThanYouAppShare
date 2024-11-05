@@ -3,7 +3,8 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
+<div class="form vh-100 d-flex align-items-center justify-content-center">
+<form method="post" class="form__container d-flex flex-column align-items-center">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -15,6 +16,7 @@
     {% endif %}
 
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <div class= "form__input d-flex flex-column row-gap-2 text-center">
     <label for="inputUsername">Username</label>
     <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
     <label for="inputPassword">Password</label>
@@ -33,5 +35,7 @@
     <button class="btn btn-lg btn-primary" type="submit">
         Sign in
     </button>
+    </div>
 </form>
+</div>
 {% endblock %}

@@ -19,10 +19,7 @@ class HomeController extends AbstractController
 
      function index(Request $request, EntityManagerInterface $emi, UserPasswordHasherInterface $hashpass): Response
     {
-        $user = new User();
-        $user -> setEmail('myriam@doe.fr')->setUsername("Myriam")->setPassword($hashpass->hashPassword($user, 'myriam1'))->setRoles([]);
-        $emi->persist($user);
-        $emi->flush();
+        
         return $this->redirectToRoute('login');
     }
 }

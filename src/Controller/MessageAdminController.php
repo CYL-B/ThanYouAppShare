@@ -17,13 +17,15 @@ use Doctrine\ORM\EntityManagerInterface;
 class MessageAdminController extends AbstractController
 {
     #[Route('/messages/add', name: 'message.addNew', methods: ['GET', 'POST'])]
-    public function addMessage(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository ): Response {
+    public function addMessage(Request $request, EntityManagerInterface $entityManager, UserRepository $user ): Response {
 
         // $sender = $userRepository->find($senderId);
 
         // Create the form for the Message entity
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
+        $sender = $this-> getUser();
+        $message->setSender($sender);
 
         // Handle the request with the form
         $form->handleRequest($request);
@@ -31,9 +33,7 @@ class MessageAdminController extends AbstractController
         // Check if form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Persist the new message to the database
-            // $message->setSender($sender);
-            
+             // Persist the new message to the database
             $entityManager->persist($message);
             $entityManager->flush();
             // Redirect to a success page or list of messages

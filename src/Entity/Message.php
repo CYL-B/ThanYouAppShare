@@ -30,7 +30,7 @@ class Message
     private ?string $title = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sentMessages')]
-    #[ORM\JoinColumn(name: 'sender_id', referencedColumnName: 'id', onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: 'sender_id', referencedColumnName: 'id',  nullable: false, onDelete: "CASCADE")]
     private User $sender;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'receivedMessages')]
@@ -42,19 +42,19 @@ class Message
         return $this->id;
     }
 
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
     public function setSender(User $sender): self
     {
         $this->sender = $sender;
         return $this;
     }
-    public function getSender(): User
-    {
-        return $this->sender;
-    }
 
-   
-
-    public function getRecipient(): User
+    public function getRecipient(): ?User
     {
         return $this->recipient;
     }
@@ -128,10 +128,11 @@ class Message
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->generateSlug();    }
+        $this->generateSlug();  
+        $this->generateDate();  }
 
-    #[ORM\PostPersist] 
-    public function onPostPersist(): void
-    {
-        $this->generateDate();    }
+    // #[ORM\PostPersist] 
+    // public function onPostPersist(): void
+    // {
+    //     $this->generateDate();    }
 }

@@ -2,12 +2,17 @@
 {% block title %} Liste des messages {% endblock %}
 
  {% block body %}
- <ul>
- {% for message in messages%}
- <li>
- <a href="{{ path('message.showNote', {id:message.getId, slug:message.getSlug})}}">{{message.getTitle}}</a>
+ 
+ <h1>Liste des messages de remerciement</h1>
+ <ul class="messageList list-group list-group-flush">
+ {% for message in messages %}
+ <a class="text-decoration-none" href="{{ path('message.showNote', {id:message.id, slug:message.slug})}}"><li class="messageList__message list-group-item">
+ <p>A l'attention de : {{message.getRecipient ? message.getRecipient.getUsername() : 'Inconnu'}}</p>
+ <p>De la part de : {{message.getSender ? message.getSender.getUsername() : 'Inconnu' }}</p>
+ <p class="fs-3">{{message.title}}</p>
  {{message.getCreatedAt |format_datetime('short', 'none', locale: 'fr')}}
  </li>
+ </a>
 
 {% endfor %}
  </ul>
