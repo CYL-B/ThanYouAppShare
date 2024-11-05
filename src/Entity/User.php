@@ -2,32 +2,44 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use App\Entity\Message;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 180)]
+    private ?string $username = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $prenom = null;
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
 
-    #[ORM\Column(length: 100, unique: true)]
-    private ?string $email = null;
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    private ?string $email = null;
 
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender')]
     private Collection $sentMessages;
@@ -40,26 +52,63 @@ class User
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getUsername(): ?string
     {
-        return $this->nom;
+        return $this->username;
     }
 
-    public function setNom(string $nom): static
+    public function setUsername(string $username): static
     {
-        $this->nom = $nom;
+        $this->username = $username;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->prenom;
+        return (string) $this->username;
     }
 
-    public function setPrenom(string $prenom): static
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+    public function getRoles(): array
     {
-        $this->prenom = $prenom;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -76,43 +125,33 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
     public function __construct()
-    {
-        $this->sentMessages = new ArrayCollection();
-        $this->receivedMessages = new ArrayCollection();
-    }
-
-        // Getter for sentMessages
-
-
-    public function getSentMessages(): Collection
-    {
-        return $this->sentMessages;
-    }
-
-        // Getter for receivedMessages
-
-    public function getReceivedMessages(): Collection
-    {
-        return $this->receivedMessages;
-    }
-        // You may also add helper methods to add and remove messages from the collections
-
-        public function getFullName() : ?string {
-            return $this->getPrenom() . ' ' . $this->getNom() ;
+        {
+            $this->sentMessages = new ArrayCollection();
+            $this->receivedMessages = new ArrayCollection();
+        }
+    
+            // Getter for sentMessages
+    
+    
+        public function getSentMessages(): Collection
+        {
+            return $this->sentMessages;
+        }
+    
+            // Getter for receivedMessages
+    
+        public function getReceivedMessages(): Collection
+        {
+            return $this->receivedMessages;
         }
 
-        //specific function used in messageForm to get recipient fullname
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
 }

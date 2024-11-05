@@ -18,15 +18,18 @@ class MessageType extends AbstractType
     {
         $builder
         ->add('title', TextType ::class, [
-            'label' => "Objet : "
+            'label' => "Objet : ",
+            'required' => true
          ])
         ->add('recipient', EntityType::class, [
             'class' => User::class,
-            'choice_label' => 'fullName',
-            'label' => "A l'attention de : "
+            'choice_label' => 'Username',
+            'label' => "A l'attention de : ",
+            'required' => true
         ])
             ->add('message_text', TextType ::class, [
-                'label' => "Dites merci !"
+                'label' => "Dites merci !",
+                'required' => true
              ])
              
             //permet de rajouter un bouton submit 

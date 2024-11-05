@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[ORM\HasLifecycleCallbacks()]
@@ -76,8 +77,8 @@ class Message
         return $this;
     }
 
-    public function __construct (){
-        $this->created_at = new \DateTime();
+    public function generateDate (){
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -120,12 +121,17 @@ class Message
     public function generateSlug(): void
     {
     // Assuming there's a property $title
-    $this->slug = str_replace(' ', '_', strtolower($this->title));
+    $slugger = new AsciiSlugger();
+    $this->slug = strtolower($slugger -> slug($this->title));
     }
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->generateSlug();
-    }
+        $this->generateSlug();    }
+
+    #[ORM\PostPersist] 
+    public function onPostPersist(): void
+    {
+        $this->generateDate();    }
 }

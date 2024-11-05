@@ -6,6 +6,7 @@
  {% for message in messages%}
  <li>
  <a href="{{ path('message.showNote', {id:message.getId, slug:message.getSlug})}}">{{message.getTitle}}</a>
+ {{message.getCreatedAt |format_datetime('short', 'none', locale: 'fr')}}
  </li>
 
 {% endfor %}

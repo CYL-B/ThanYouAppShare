@@ -47,7 +47,8 @@ class MessageController extends AbstractController
                 'date' => $message->getCreatedAt(),
                 'content' => $message->getMessageText(),
                 'recipient' => $message->getRecipient(),
-                'title' => $message -> getTitle()
+                'title' => $message -> getTitle(),
+                'id' => $message -> getId()
             ]
         ]);
     }

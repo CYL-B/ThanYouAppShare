@@ -6,9 +6,15 @@
 {% block body %}
 	
 <h1>{{message.title}}</h1>
-<p>From <i>{{message.author.nom}}</i><p/>
-<p>To <i>{{message.recipient.nom}}</i><p/>
+<p>From <i>{{message.author.username}}</i><p/>
+<p>To <i>{{message.recipient.username}}</i><p/>
 <p>{{message.content}}</p>
 	
-	#on récupère du controller tous les éléments#
+	{#% if message.author.id == user.id %#}
+	<form action="{{path('message.delete', {id:message.id})}}" method="POST">
+	<input type="hidden" name="_method" value="DELETE"></input>
+	<button type="submit" class="btn btn-sm btn-danger">Supprimer votre message</button></form>
+	{#% endif %#}
 {% endblock %}
+
+{#on récupère du controller tous les éléments du message#}

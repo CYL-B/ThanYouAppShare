@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class MessageAdminController extends AbstractController
 {
-    #[Route('/messages/add', name: 'message.addNew')]
+    #[Route('/messages/add', name: 'message.addNew', methods: ['GET', 'POST'])]
     public function addMessage(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository ): Response {
 
         // $sender = $userRepository->find($senderId);
@@ -33,6 +33,7 @@ class MessageAdminController extends AbstractController
 
             // Persist the new message to the database
             // $message->setSender($sender);
+            
             $entityManager->persist($message);
             $entityManager->flush();
             // Redirect to a success page or list of messages
@@ -47,11 +48,13 @@ class MessageAdminController extends AbstractController
     }
 
     #[Route('/messages/{id}/delete', name: 'message.delete', methods: ['DELETE'])]
-    public function deleteMessage(Request $request, int $messageId, MessageRepository $messageRepository, EntityManagerInterface $entityManager): Response {
+    public function deleteMessage(Message $message, EntityManagerInterface $entityManager): Response {
+        $entityManager->remove($message);
+        $entityManager->flush();
 
-        $message = $messageRepository->delete($messageId);
+        $this->addFlash('success', 'Message bien supprimé');
 
-        return $this->render('messageSuccess.html.twig');
+              return $this->redirectToRoute('message.index');
 
     }
 }
