@@ -6,7 +6,7 @@
 {% block body %}
 
 	<h1>Liste des messages de remerciement</h1>
-	<div id="userInfo" data-username="{{ app.user.username }}"></div>
+	<div id="userInfo" data-username="{{ app.user ? app.user.username : "Inconnu"  }}"></div>
 	<ul class="messageList d-flex flex-wrap gap-3 list-group-horizontal">
 		{% for message in listMessages %}
 

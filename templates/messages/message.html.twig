@@ -12,7 +12,7 @@
 			<i>{{message.recipient.username}}</i><p/></p>
 		<p class="border-bottom">{{message.content}}</p>
 
-		{% if message.author.id == user.id %}
+		{% if user and message.author.id == user.id %}
 			<form action="{{path('message.delete', {id:message.id})}}" method="POST">
 				<input type="hidden" name="_method" value="DELETE"></input>
 			<button type="submit" class="btn btn-sm btn-danger">Supprimer votre message</button>

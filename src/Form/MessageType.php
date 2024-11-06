@@ -34,7 +34,7 @@ class MessageType extends AbstractType
              
             //permet de rajouter un bouton submit 
             ->add('save', SubmitType :: class, [
-                'label' => "Post new message"
+                'label' => "Poster un nouveau message"
             ])
         ;
     }
