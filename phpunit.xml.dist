@@ -8,7 +8,7 @@
          bootstrap="tests/bootstrap.php"
          convertDeprecationsToExceptions="false"
 >
-    <php>
+    <php> 
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
